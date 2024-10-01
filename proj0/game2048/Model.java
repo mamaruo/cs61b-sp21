@@ -163,6 +163,32 @@ public class Model extends Observable {
      */
     public static boolean atLeastOneMoveExists(Board b) {
         // TODO: Fill in this function.
+        // 遍历检查是否有空块。Check if there is an empty space.
+        for (Tile t: b){
+            if (t == null) return true;
+        }
+
+        // Check if two adjacent tiles has the same value.
+        int boardSize = b.size();
+        for (int i = 0; i < boardSize - 1; i++){
+            for (int j = 0; j < boardSize - 1; j++){
+                Tile curr, right, bottom;
+                curr = b.tile(i, j); right = b.tile(i + 1 , j); bottom = b.tile(i, j + 1);
+
+                if (curr == null) continue;
+                if (right != null && curr.value() == right.value()) return true;
+                if (bottom != null && curr.value() == bottom.value()) return true;
+            }
+        }
+
+        Tile lowerRight = b.tile(boardSize - 1, boardSize - 1);
+        Tile top = b.tile(boardSize - 1, boardSize - 2);
+        Tile left = b.tile(boardSize - 2, boardSize - 1);
+        if (lowerRight != null){
+            if (top != null && top.value() == lowerRight.value()) return true;
+            if (left != null && left.value() == lowerRight.value()) return true;
+        }
+
         return false;
     }
 
