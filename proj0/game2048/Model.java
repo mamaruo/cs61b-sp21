@@ -2,10 +2,11 @@ package game2048;
 
 import java.util.Formatter;
 import java.util.Observable;
+import java.util.ArrayList;
 
 
 /** The state of a game of 2048.
- *  @author TODO: YOUR NAME HERE
+ *  @author mamaruo
  */
 public class Model extends Observable {
     /** Current contents of the board. */
@@ -94,6 +95,8 @@ public class Model extends Observable {
         setChanged();
     }
 
+
+
     /** Tilt the board toward SIDE. Return true iff this changes the board.
      *
      * 1. If two Tile objects are adjacent in the direction of motion and have
@@ -110,9 +113,59 @@ public class Model extends Observable {
         boolean changed;
         changed = false;
 
+        board.setViewingPerspective(Side.NORTH);
+
         // TODO: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
+        int size = board.size();
+        for (int col = 0; col < size; col++) {
+            ArrayList<Tile> merged = new ArrayList<>(); // 根据规则，在一次操作中若一个方块是由合并产生，无法再次发生合并，记录之
+            for (int row = size - 2 ; row >= 0; row--) { // 从上至下遍历当前列作为待移动方块
+
+                Tile t = tile(col, row); // 当前方块，待移动
+                int cur_value;
+                if (t != null) cur_value = t.value(); // 若当前方块为空则跳过
+                else continue;
+
+                for (int i = row + 1; i < size; i++){ // 从下至上寻找合适的移动目标
+                    Tile target = tile(col, i); // 目标方块
+                    if (target != null) {
+                        if (target.value() == cur_value) { // 目标不为空且值等于当前方块且
+                            if (merged.contains(target)) { //   目标是本次 tilt 的结果
+                                if (tile(col, i - 1) != null) break; //   则检查其下方一格是否为空，若
+                                else {
+                                    board.move(col, i - 1, t); //   为空则移动之
+                                    changed = true;
+                                }
+                            } else { // 若1. 目标不为空 2. 值等于当前方块 3. 目标不是本次tilt的结果。将当前方块合并到目标位置
+                                board.move(col, i, t);
+                                merged.add(tile(col, i));
+                                score += tile(col, i).value(); // 合并则加分
+                                changed = true;
+                            }
+                        } else { // 目标不为空且值**不等于**当前方块，则移动到目标下方
+                            if (tile(col, i - 1) != null) break;
+                            else {
+                                board.move(col, i - 1, t);
+                                changed = true;
+                            }
+                        }
+                    } else { // 若目标位置为空且是边缘，则移动到目标位置
+                        if (i == size - 1){
+                            board.move(col, size - 1, t);
+                            changed = true;
+                        } else {
+                            continue;
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+
 
         checkGameOver();
         if (changed) {
@@ -162,7 +215,6 @@ public class Model extends Observable {
      * 2. There are two adjacent tiles with the same value.
      */
     public static boolean atLeastOneMoveExists(Board b) {
-        // TODO: Fill in this function.
         // 遍历检查是否有空块。Check if there is an empty space.
         for (Tile t: b){
             if (t == null) return true;
