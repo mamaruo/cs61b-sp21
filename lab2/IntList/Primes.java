@@ -25,7 +25,7 @@ public class Primes {
         if (n % 2 == 0) return false;
 
         int sqrt = (int) Math.sqrt(n);
-        for (int i = 5; i <= sqrt; i += 2){
+        for (int i = 3; i <= sqrt; i += 2){
             if (n % i == 0) return false;
         }
 
