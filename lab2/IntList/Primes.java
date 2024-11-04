@@ -22,19 +22,11 @@ public class Primes {
         // Corner cases
         if (n <= 1 || n == 4) return false;
         if (n <= 3) return true;
+        if (n % 2 == 0) return false;
 
-        int k = 3; // Try k = 3 times
-        while (k > 0)
-        {
-            // Pick a random number in [2..n-2]
-            // Above corner cases make sure that n > 4
-            int a = 2 + (int)(Math.random() % (n - 4));
-
-            // Fermat's little theorem
-            if (power(a, n - 1, n) != 1)
-                return false;
-
-            k--;
+        int sqrt = (int) Math.sqrt(n);
+        for (int i = 5; i <= sqrt; i += 2){
+            if (n % i == 0) return false;
         }
 
         return true;

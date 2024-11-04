@@ -3,7 +3,7 @@ package IntList;
 public class IntListExercises {
 
     /**
-     * Part A: (Buggy) mutative method that adds a constant C to each
+     * Part A: mutative method that adds a constant C to each
      * element of an IntList
      *
      * @param lst IntList from Lecture
@@ -14,6 +14,7 @@ public class IntListExercises {
             head.first += c;
             head = head.rest;
         }
+        head.first += c;
     }
 
     /**
@@ -26,7 +27,9 @@ public class IntListExercises {
     public static void setToZeroIfMaxFEL(IntList L) {
         IntList p = L;
         while (p != null) {
-            if (firstDigitEqualsLastDigit(max(p))) {
+            int currMax = max(p);
+            boolean firstEqualsLast = firstDigitEqualsLastDigit(currMax);
+            if (firstEqualsLast) {
                 p.first = 0;
             }
             p = p.rest;
@@ -51,7 +54,7 @@ public class IntListExercises {
      */
     public static boolean firstDigitEqualsLastDigit(int x) {
         int lastDigit = x % 10;
-        while (x > 10) {
+        while (x >= 10) {
             x = x / 10;
         }
         int firstDigit = x % 10;
@@ -71,12 +74,18 @@ public class IntListExercises {
             return false;
         }
 
-        boolean currElemIsPrime = Primes.isPrime(lst.first);
+        boolean updated = false;
 
-        if (currElemIsPrime) {
+        // Check if the current element is prime
+        if (Primes.isPrime(lst.first)) {
             lst.first *= lst.first;
+            updated = true;
         }
 
-        return currElemIsPrime || squarePrimes(lst.rest);
+        // Recursively process the rest of the list
+        boolean restUpdated = squarePrimes(lst.rest);
+
+        // Return true if there was any update in the current element or the rest of the list
+        return updated || restUpdated;
     }
 }
