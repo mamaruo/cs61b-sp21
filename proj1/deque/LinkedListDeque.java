@@ -81,4 +81,16 @@ public class LinkedListDeque<T> {
         System.out.println();
     }
 
+    public T get(int index){
+        int counter = 0;
+        LNode current = sentinel.next;
+        while (current != sentinel){
+            if (counter == index) return current.data;
+            current = current.next;
+            counter++;
+        }
+        return null;
+    }
+
+    
 }

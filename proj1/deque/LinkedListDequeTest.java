@@ -133,4 +133,28 @@ public class LinkedListDequeTest {
             assertEquals("Should have the same value", i, (double) lld1.removeLast(), 0.0);
         }
     }
+
+    @Test
+    /* Check if get() returns the correct element at a given index. */
+    public void getTest() {
+        LinkedListDeque<String> lld1 = new LinkedListDeque<String>();
+        lld1.addLast("first");
+        lld1.addLast("second");
+        lld1.addLast("third");
+
+        assertEquals("Should return 'first'", "first", lld1.get(0));
+        assertEquals("Should return 'second'", "second", lld1.get(1));
+        assertEquals("Should return 'third'", "third", lld1.get(2));
+    }
+
+    @Test
+    /* Check if get() returns null for an out-of-bounds index. */
+    public void getOutOfBoundsTest() {
+        LinkedListDeque<String> lld1 = new LinkedListDeque<String>();
+        lld1.addLast("first");
+        lld1.addLast("second");
+
+        assertNull("Should return null for negative index", lld1.get(-1));
+        assertNull("Should return null for index greater than size", lld1.get(2));
+    }
 }
