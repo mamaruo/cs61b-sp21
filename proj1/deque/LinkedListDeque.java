@@ -92,5 +92,5 @@ public class LinkedListDeque<T> {
         return null;
     }
 
-    
+
 }
