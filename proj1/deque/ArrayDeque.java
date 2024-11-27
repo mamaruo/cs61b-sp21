@@ -49,6 +49,10 @@ public class ArrayDeque<T> {
         return items[last];
     }
 
+    public T get(int index){
+        return items[(first + index) % capacity];
+    }
+
     public void resize(int newCapacity) {
         if (newCapacity < size) {
             throw new IllegalArgumentException("New capacity must be greater than or equal to the current size.");
@@ -100,23 +104,24 @@ public class ArrayDeque<T> {
         return Arrays.toString(items);
     }
 
-//    public static void main(String[] args) {
-//        ArrayDeque<Integer> arrayDeque = new ArrayDeque<>();
-//        arrayDeque.addFirst(1);
-//        arrayDeque.addFirst(2);
-//        arrayDeque.addLast(3);
-//        arrayDeque.addLast(4);
-//        arrayDeque.addLast(5);
-//        arrayDeque.addLast(6);
-//        arrayDeque.addLast(7);
-//        arrayDeque.addLast(8);
-//        System.out.println(arrayDeque.tooString());;
-//        arrayDeque.resize(16);
-//        System.out.println(arrayDeque.tooString());
-//        arrayDeque.printDeque();
-//        System.out.println(arrayDeque.removeFirst());
-//        System.out.println(arrayDeque.removeLast());
-//        System.out.println(arrayDeque.tooString());
-//        arrayDeque.printDeque();
-//    }
+    public static void main(String[] args) {
+        ArrayDeque<Integer> arrayDeque = new ArrayDeque<>();
+        arrayDeque.addFirst(1);
+        arrayDeque.addFirst(2);
+        arrayDeque.addLast(3);
+        arrayDeque.addLast(4);
+        arrayDeque.addLast(5);
+        arrayDeque.addLast(6);
+        arrayDeque.addLast(7);
+        arrayDeque.addLast(8);
+        System.out.println(arrayDeque.tooString());;
+        arrayDeque.resize(16);
+        System.out.println(arrayDeque.tooString());
+        arrayDeque.printDeque();
+        System.out.println(arrayDeque.removeFirst());
+        System.out.println(arrayDeque.removeLast());
+        System.out.println(arrayDeque.tooString());
+        arrayDeque.printDeque();
+        System.out.println(arrayDeque.get(0));
+    }
 }
