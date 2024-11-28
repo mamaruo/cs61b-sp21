@@ -29,7 +29,7 @@ public class TimeAList {
         AList<Double> times = new AList<>();
         AList<Integer> opCounts = new AList<>();
 
-        int[] testSizes = {1000, 2000, 4000, 8000, 16000, 32000, 64000, 100000000};
+        int[] testSizes = {1000, 2000, 4000, 8000, 16000, 32000, 64000, 128000};
 
         for (int size : testSizes) {
             AList<Integer> test = new AList<>();
