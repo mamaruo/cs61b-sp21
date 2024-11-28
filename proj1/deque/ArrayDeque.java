@@ -50,6 +50,10 @@ public class ArrayDeque<T> {
     }
 
     public T get(int index){
+        if (index < 0 || index >= size){
+            return null;
+        }
+
         return items[(first + index) % capacity];
     }
 
@@ -77,8 +81,6 @@ public class ArrayDeque<T> {
     public boolean isEmpty() {
         return size == 0;
     }
-
-
 
     public void printDeque(){
         for (int i = 0; i < size; i++){

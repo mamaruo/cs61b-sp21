@@ -14,6 +14,8 @@ package timingtest;
  size: The number of items in the list should be size.
 */
 
+
+
 public class AList<Item> {
     private Item[] items;
     private int size;
@@ -34,7 +36,7 @@ public class AList<Item> {
     /** Inserts X into the back of the list. */
     public void addLast(Item x) {
         if (size == items.length) {
-            resize(size + 1);
+            resize(size * 2);
         }
 
         items[size] = x;

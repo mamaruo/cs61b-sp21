@@ -1,7 +1,5 @@
 package deque;
 
-import net.sf.saxon.functions.ConstantFunction;
-
 public class LinkedListDeque<T> {
     private class LNode{
         T data;
@@ -82,6 +80,9 @@ public class LinkedListDeque<T> {
     }
 
     public T get(int index){
+        if (index < 0 || index >= size){
+            return null;
+        }
         int counter = 0;
         LNode current = sentinel.next;
         while (current != sentinel){
@@ -91,6 +92,4 @@ public class LinkedListDeque<T> {
         }
         return null;
     }
-
-
 }

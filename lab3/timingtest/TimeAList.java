@@ -3,6 +3,9 @@ import edu.princeton.cs.algs4.Stopwatch;
 
 /**
  * Created by hug.
+ * Ns: 列表中元素数的列表
+ * times：运行时间的列表
+ * opCounts：操作次数的列表
  */
 public class TimeAList {
     private static void printTimingTable(AList<Integer> Ns, AList<Double> times, AList<Integer> opCounts) {
@@ -22,6 +25,27 @@ public class TimeAList {
     }
 
     public static void timeAListConstruction() {
-        // TODO: YOUR CODE HERE
+        AList<Integer> Ns = new AList<>();
+        AList<Double> times = new AList<>();
+        AList<Integer> opCounts = new AList<>();
+
+        int[] testSizes = {1000, 2000, 4000, 8000, 16000, 32000, 64000, 100000000};
+
+        for (int size : testSizes) {
+            AList<Integer> test = new AList<>();
+            Stopwatch sw = new Stopwatch();
+
+            for (int i = 0; i < size; i++) {
+                test.addLast(i);
+            }
+
+            double runTime = sw.elapsedTime();
+
+            Ns.addLast(size);
+            times.addLast(runTime);
+            opCounts.addLast(size);
+        }
+
+        printTimingTable(Ns, times, opCounts);
     }
 }
