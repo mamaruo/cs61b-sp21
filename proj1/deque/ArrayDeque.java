@@ -6,9 +6,9 @@ import java.util.Arrays;
 public class ArrayDeque<T> {
     private int capacity; // 数组长度
     private int size; // 队列的长度
-    private int last; // 队列最后一个元素的位置
     private int first; // 队列第一个元素的位置
-    private T[] items;
+    private int last; // 队列最后一个元素的后一位
+    private T[] items; // 存储元素的数组
 
     public ArrayDeque() {
         items = (T[]) new Object[8];
@@ -18,9 +18,6 @@ public class ArrayDeque<T> {
         capacity = 8;
     }
 
-    /**
-     * 在队列首部添加元素。item永不为null。
-     */
     public void addFirst(T item) {
         if (isFull()) {
             resize(capacity * 2);
@@ -30,25 +27,47 @@ public class ArrayDeque<T> {
         size++;
     }
 
+
     public void addLast(T item) {
+        if (isFull()) {
+            resize(capacity * 2);
+        }
         items[last] = item;
         last = ( last + 1 ) % capacity;
         size++;
     }
 
     public T removeFirst(){
-        T n = items[first];
+        if (size == 0) {
+            return null;
+        }
+        T n = get(0);
         size--;
         first = (first + 1) % capacity;
+        if ((size < capacity / 4) && capacity >= 16){
+            resize(capacity / 2);
+        }
         return n;
     }
 
     public T removeLast(){
+        if (size == 0){
+            return null;
+        }
+        T n = get(size - 1);
         size--;
-        last = (last - 1) % capacity;
-        return items[last];
+        last = ((last - 1) + capacity) % capacity;
+        if ((size < capacity / 4) && capacity >= 16){
+            resize(capacity / 2);
+        }
+        return n;
     }
 
+    /**
+     * 获取指定索引的元素
+     * @param index 索引
+     * @return 返回的元素
+     */
     public T get(int index){
         if (index < 0 || index >= size){
             return null;
@@ -57,6 +76,10 @@ public class ArrayDeque<T> {
         return items[(first + index) % capacity];
     }
 
+    /**
+     * 将双端队列调整至指定大小（调整 capacity）
+     * @param newCapacity 调整的目标大小
+     */
     public void resize(int newCapacity) {
         if (newCapacity < size) {
             throw new IllegalArgumentException("New capacity must be greater than or equal to the current size.");
@@ -78,10 +101,18 @@ public class ArrayDeque<T> {
         return size;
     }
 
+    public double getCapacityFactor() {
+        return (double) size / capacity;
+    }
+
     public boolean isEmpty() {
         return size == 0;
     }
 
+    /**
+     * 打印双端队列中的所有元素。
+     * 元素之间用空格分隔，最后换行。
+     */
     public void printDeque(){
         for (int i = 0; i < size; i++){
             System.out.print(items[(i + first) % capacity]);
