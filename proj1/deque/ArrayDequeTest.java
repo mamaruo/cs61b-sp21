@@ -5,6 +5,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 
+import java.util.Comparator;
+
 import static org.junit.Assert.*;
 
 public class ArrayDequeTest {
@@ -101,5 +103,108 @@ public class ArrayDequeTest {
                 assertTrue(AD.getCapacityFactor() > 0.25);
             }
         }
+    }
+
+    @Test
+    public void testEquals_SameObject() {
+        ArrayDeque<Integer> deque = new ArrayDeque<>();
+        assertTrue(deque.equals(deque));
+    }
+
+    @Test
+    public void testEquals_NullObject() {
+        ArrayDeque<Integer> deque = new ArrayDeque<>();
+        assertFalse(deque.equals(null));
+    }
+
+    @Test
+    public void testEquals_DifferentClass() {
+        ArrayDeque<Integer> deque = new ArrayDeque<>();
+        Object obj = new Object();
+        assertFalse(deque.equals(obj));
+    }
+
+    @Test
+    public void testEquals_EmptyDeques() {
+        ArrayDeque<Integer> deque1 = new ArrayDeque<>();
+        ArrayDeque<Integer> deque2 = new ArrayDeque<>();
+        assertTrue(deque1.equals(deque2));
+    }
+
+    @Test
+    public void testEquals_SameElements() {
+        ArrayDeque<Integer> deque1 = new ArrayDeque<>();
+        deque1.addFirst(1);
+        deque1.addLast(2);
+        deque1.addLast(3);
+
+        ArrayDeque<Integer> deque2 = new ArrayDeque<>();
+        deque2.addFirst(1);
+        deque2.addLast(2);
+        deque2.addLast(3);
+
+        assertTrue(deque1.equals(deque2));
+    }
+
+    @Test
+    public void testEquals_DifferentElements() {
+        ArrayDeque<Integer> deque1 = new ArrayDeque<>();
+        deque1.addFirst(1);
+        deque1.addLast(2);
+        deque1.addLast(3);
+
+        ArrayDeque<Integer> deque2 = new ArrayDeque<>();
+        deque2.addFirst(1);
+        deque2.addLast(2);
+        deque2.addLast(4);
+
+        assertFalse(deque1.equals(deque2));
+    }
+
+    @Test
+    public void testEquals_DifferentSizes() {
+        ArrayDeque<Integer> deque1 = new ArrayDeque<>();
+        deque1.addFirst(1);
+        deque1.addLast(2);
+
+        ArrayDeque<Integer> deque2 = new ArrayDeque<>();
+        deque2.addFirst(1);
+        deque2.addLast(2);
+        deque2.addLast(3);
+
+        assertFalse(deque1.equals(deque2));
+    }
+
+    @Test
+    public void testEquals_DifferentCapacities() {
+        ArrayDeque<Integer> deque1 = new ArrayDeque<>();
+        deque1.addFirst(1);
+        deque1.addLast(2);
+        deque1.addLast(3);
+
+        ArrayDeque<Integer> deque2 = new ArrayDeque<>();
+        deque2.addFirst(1);
+        deque2.addLast(2);
+        deque2.addLast(3);
+        deque2.resize(16);
+
+        assertTrue(deque1.equals(deque2));
+    }
+
+    @Test
+    public void testEquals_CircularArray() {
+        ArrayDeque<Integer> deque1 = new ArrayDeque<>();
+        deque1.addFirst(1);
+        deque1.addLast(2);
+        deque1.addLast(3);
+        deque1.removeFirst();
+        deque1.addLast(4);
+
+        ArrayDeque<Integer> deque2 = new ArrayDeque<>();
+        deque2.addFirst(2);
+        deque2.addLast(3);
+        deque2.addLast(4);
+
+        assertTrue(deque1.equals(deque2));
     }
 }

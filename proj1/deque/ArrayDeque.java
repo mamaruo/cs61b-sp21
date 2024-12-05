@@ -1,9 +1,11 @@
 package deque;
 
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Objects;
 
 @SuppressWarnings("unchecked")
-public class ArrayDeque<T> {
+public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
     private int capacity; // 数组长度
     private int size; // 队列的长度
     private int first; // 队列第一个元素的位置
@@ -18,6 +20,7 @@ public class ArrayDeque<T> {
         capacity = 8;
     }
 
+    @Override
     public void addFirst(T item) {
         if (isFull()) {
             resize(capacity * 2);
@@ -27,7 +30,7 @@ public class ArrayDeque<T> {
         size++;
     }
 
-
+    @Override
     public void addLast(T item) {
         if (isFull()) {
             resize(capacity * 2);
@@ -37,6 +40,7 @@ public class ArrayDeque<T> {
         size++;
     }
 
+    @Override
     public T removeFirst(){
         if (size == 0) {
             return null;
@@ -50,6 +54,7 @@ public class ArrayDeque<T> {
         return n;
     }
 
+    @Override
     public T removeLast(){
         if (size == 0){
             return null;
@@ -68,6 +73,7 @@ public class ArrayDeque<T> {
      * @param index 索引
      * @return 返回的元素
      */
+    @Override
     public T get(int index){
         if (index < 0 || index >= size){
             return null;
@@ -97,6 +103,7 @@ public class ArrayDeque<T> {
         return size == capacity;
     }
 
+    @Override
     public int size() {
         return size;
     }
@@ -105,6 +112,7 @@ public class ArrayDeque<T> {
         return (double) size / capacity;
     }
 
+    @Override
     public boolean isEmpty() {
         return size == 0;
     }
@@ -113,6 +121,7 @@ public class ArrayDeque<T> {
      * 打印双端队列中的所有元素。
      * 元素之间用空格分隔，最后换行。
      */
+    @Override
     public void printDeque(){
         for (int i = 0; i < size; i++){
             System.out.print(items[(i + first) % capacity]);
@@ -137,6 +146,49 @@ public class ArrayDeque<T> {
         return Arrays.toString(items);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o instanceof ArrayDeque){
+            ArrayDeque<?> that = (ArrayDeque<?>) o;
+            if (this.size() != that.size()) return false;
+            for (int i = 0; i < this.size; i++){
+                if (!(Objects.equals(this.get(i), that.get(i)))) return false;
+            }
+        } else return false;
+        return true;
+    }
+
+    /**
+     * Returns an iterator over elements of type {@code T}.
+     *
+     * @return an Iterator.
+     */
+    @Override
+    public Iterator<T> iterator() {
+        return new ArrayDequeIterator();
+    }
+
+    private class ArrayDequeIterator implements Iterator<T>{
+        private int pos;
+
+        public ArrayDequeIterator() {
+            this.pos = 0;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return pos < size;
+        }
+
+        @Override
+        public T next() {
+            T nextItem = items[pos];
+            pos++;
+            return nextItem;
+        }
+    }
+
     public static void main(String[] args) {
         ArrayDeque<Integer> arrayDeque = new ArrayDeque<>();
         arrayDeque.addFirst(1);
@@ -147,14 +199,20 @@ public class ArrayDeque<T> {
         arrayDeque.addLast(6);
         arrayDeque.addLast(7);
         arrayDeque.addLast(8);
-        System.out.println(arrayDeque.tooString());;
-        arrayDeque.resize(16);
-        System.out.println(arrayDeque.tooString());
-        arrayDeque.printDeque();
-        System.out.println(arrayDeque.removeFirst());
-        System.out.println(arrayDeque.removeLast());
-        System.out.println(arrayDeque.tooString());
-        arrayDeque.printDeque();
-        System.out.println(arrayDeque.get(0));
+        for (int i: arrayDeque){
+            System.out.print(i + " ");
+        }
+        System.out.println();
+//        System.out.println(arrayDeque.tooString());;
+//        arrayDeque.resize(16);
+//        System.out.println(arrayDeque.tooString());
+//        arrayDeque.printDeque();
+//        System.out.println(arrayDeque.removeFirst());
+//        System.out.println(arrayDeque.removeLast());
+//        System.out.println(arrayDeque.tooString());
+//        arrayDeque.printDeque();
+//        System.out.println(arrayDeque.get(0));
     }
+
+
 }

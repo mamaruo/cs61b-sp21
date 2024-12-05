@@ -1,6 +1,8 @@
 package deque;
 
-public class LinkedListDeque<T> {
+import java.util.Iterator;
+
+public class LinkedListDeque<T> implements Iterable<T>, Deque<T>{
     private class LNode{
         T data;
         LNode prev;
@@ -22,6 +24,7 @@ public class LinkedListDeque<T> {
         sentinel.next = sentinel;
     }
 
+    @Override
     public void addFirst(T item){
         LNode newNode = new LNode(item);
         newNode.prev = sentinel;
@@ -31,6 +34,7 @@ public class LinkedListDeque<T> {
         size++;
     }
 
+    @Override
     public void addLast(T item) {
         LNode newNode = new LNode(item);
         newNode.next = sentinel;
@@ -40,6 +44,7 @@ public class LinkedListDeque<T> {
         size++;
     }
 
+    @Override
     public T removeFirst() {
         if (isEmpty()){
             return null;
@@ -51,6 +56,7 @@ public class LinkedListDeque<T> {
         return firstNode.data;
     }
 
+    @Override
     public T removeLast(){
         if (isEmpty()){
             return null;
@@ -62,14 +68,12 @@ public class LinkedListDeque<T> {
         return lastNode.data;
     }
 
+    @Override
     public int size(){
         return this.size;
     }
 
-    public boolean isEmpty(){
-        return size == 0;
-    }
-
+    @Override
     public void printDeque(){
         LNode current = sentinel.next;
         while (current != sentinel){
@@ -79,6 +83,7 @@ public class LinkedListDeque<T> {
         System.out.println();
     }
 
+    @Override
     public T get(int index){
         if (index < 0 || index >= size){
             return null;
@@ -91,5 +96,26 @@ public class LinkedListDeque<T> {
             counter++;
         }
         return null;
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new LinkedListDequeIterator();
+    }
+
+    private class LinkedListDequeIterator implements Iterator<T>{
+        private LNode current = sentinel.next;
+
+        @Override
+        public boolean hasNext() {
+            return current != sentinel;
+        }
+
+        @Override
+        public T next() {
+            T item = current.data;
+            current = current.next;
+            return item;
+        }
     }
 }
