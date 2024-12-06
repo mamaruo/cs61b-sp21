@@ -36,33 +36,33 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
             resize(capacity * 2);
         }
         items[last] = item;
-        last = ( last + 1 ) % capacity;
+        last = (last + 1) % capacity;
         size++;
     }
 
     @Override
-    public T removeFirst(){
+    public T removeFirst() {
         if (size == 0) {
             return null;
         }
         T n = get(0);
         size--;
         first = (first + 1) % capacity;
-        if ((size < capacity / 4) && capacity >= 16){
+        if ((size < capacity / 4) && capacity >= 16) {
             resize(capacity / 2);
         }
         return n;
     }
 
     @Override
-    public T removeLast(){
-        if (size == 0){
+    public T removeLast() {
+        if (size == 0) {
             return null;
         }
         T n = get(size - 1);
         size--;
         last = ((last - 1) + capacity) % capacity;
-        if ((size < capacity / 4) && capacity >= 16){
+        if ((size < capacity / 4) && capacity >= 16) {
             resize(capacity / 2);
         }
         return n;
@@ -70,12 +70,13 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
 
     /**
      * 获取指定索引的元素
+     *
      * @param index 索引
      * @return 返回的元素
      */
     @Override
-    public T get(int index){
-        if (index < 0 || index >= size){
+    public T get(int index) {
+        if (index < 0 || index >= size) {
             return null;
         }
 
@@ -84,9 +85,10 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
 
     /**
      * 将双端队列调整至指定大小（调整 capacity）
+     *
      * @param newCapacity 调整的目标大小
      */
-    public void resize(int newCapacity) {
+    private void resize(int newCapacity) {
         if (newCapacity < size) {
             throw new IllegalArgumentException("New capacity must be greater than or equal to the current size.");
         }
@@ -108,13 +110,8 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
         return size;
     }
 
-    public double getCapacityFactor() {
+    private double getCapacityFactor() {
         return (double) size / capacity;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return size == 0;
     }
 
     /**
@@ -122,40 +119,35 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
      * 元素之间用空格分隔，最后换行。
      */
     @Override
-    public void printDeque(){
-        for (int i = 0; i < size; i++){
+    public void printDeque() {
+        for (int i = 0; i < size; i++) {
             System.out.print(items[(i + first) % capacity]);
-            if (i < size - 1) System.out.print(" ");
+            if (i < size - 1) {
+                System.out.print(" ");
+            }
         }
         System.out.println();
     }
 
 
-    public String tooString() {
-        return "ArrayDeque{" +
-                "items=" + Arrays.toString(items) +
-                ", first=" + first +
-                ", last=" + last +
-                ", size=" + size +
-                ", capacity=" + capacity +
-                '}';
-    }
-
-    @Override
-    public String toString(){
-        return Arrays.toString(items);
-    }
-
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o instanceof ArrayDeque){
+        if (this == o) {
+            return true;
+        }
+        if (o instanceof ArrayDeque) {
             ArrayDeque<?> that = (ArrayDeque<?>) o;
-            if (this.size() != that.size()) return false;
-            for (int i = 0; i < this.size; i++){
-                if (!(Objects.equals(this.get(i), that.get(i)))) return false;
+            if (this.size() != that.size()) {
+                return false;
             }
-        } else return false;
+            for (int i = 0; i < this.size; i++) {
+                if (!(Objects.equals(this.get(i), that.get(i)))) {
+                    return false;
+                }
+            }
+        } else {
+            return false;
+        }
         return true;
     }
 
@@ -169,7 +161,7 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
         return new ArrayDequeIterator();
     }
 
-    private class ArrayDequeIterator implements Iterator<T>{
+    private class ArrayDequeIterator implements Iterator<T> {
         private int pos;
 
         public ArrayDequeIterator() {
@@ -188,31 +180,4 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
             return nextItem;
         }
     }
-
-    public static void main(String[] args) {
-        ArrayDeque<Integer> arrayDeque = new ArrayDeque<>();
-        arrayDeque.addFirst(1);
-        arrayDeque.addFirst(2);
-        arrayDeque.addLast(3);
-        arrayDeque.addLast(4);
-        arrayDeque.addLast(5);
-        arrayDeque.addLast(6);
-        arrayDeque.addLast(7);
-        arrayDeque.addLast(8);
-        for (int i: arrayDeque){
-            System.out.print(i + " ");
-        }
-        System.out.println();
-//        System.out.println(arrayDeque.tooString());;
-//        arrayDeque.resize(16);
-//        System.out.println(arrayDeque.tooString());
-//        arrayDeque.printDeque();
-//        System.out.println(arrayDeque.removeFirst());
-//        System.out.println(arrayDeque.removeLast());
-//        System.out.println(arrayDeque.tooString());
-//        arrayDeque.printDeque();
-//        System.out.println(arrayDeque.get(0));
-    }
-
-
 }
