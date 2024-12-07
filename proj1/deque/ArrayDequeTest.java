@@ -207,4 +207,22 @@ public class ArrayDequeTest {
 
         assertTrue(deque1.equals(deque2));
     }
+
+    @Test
+    public void testEquals_DifferentImp() {
+        Deque<String> LLD = new LinkedListDeque<>();
+        Deque<String> AD = new ArrayDeque<>();
+        assertTrue(LLD.equals(AD));
+        assertTrue(AD.equals(LLD));
+
+        for (int i = 1; i < 5; i++){
+            LLD.addLast("" + i);
+            AD.addLast(""+ i);
+        }
+        assertTrue(AD.equals(LLD));
+
+        AD.addLast("4");
+        assertFalse(LLD.equals(AD));
+        assertFalse(AD.equals(LLD));
+    }
 }

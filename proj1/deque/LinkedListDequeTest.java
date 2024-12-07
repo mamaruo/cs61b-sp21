@@ -163,5 +163,58 @@ public class LinkedListDequeTest {
         assertNull("Should return null for index greater than size", lld1.get(2));
     }
 
+    @Test
+    /*
+    Check if equals() returns true for two LLD
+    with same element or that are the same object.
+     */
+    public void testEquals_Basic() {
+        LinkedListDeque<Integer> lldInt1 = new LinkedListDeque<>();
+        LinkedListDeque<Integer> lldInt2 = new LinkedListDeque<>();
+        LinkedListDeque<String> lldString1 = new LinkedListDeque<>();
+        LinkedListDeque<String> lldString2 = new LinkedListDeque<>();
 
+        assertTrue(lldInt2.equals(lldInt1));
+
+        for (int i = 55; i < 59; i++){
+            lldInt2.addLast(i);
+            lldInt1.addLast(i);
+            lldString1.addLast(Integer.toString(i));
+            lldString2.addLast(Integer.toString(i));
+        }
+        assertTrue(lldInt2.equals(lldInt1));
+        assertTrue(lldString1.equals(lldString2));
+        assertTrue(lldString1.equals(lldString1));
+        lldInt1.addLast(2);
+        lldString1.addLast("2");
+        lldString1.addLast("3");
+        assertFalse(lldInt1.equals(lldInt2));
+        assertFalse(lldString1.equals(lldString2));
+    }
+
+    @Test
+    /* Test if equals() returns true for two deque with same elements
+    different class.
+     */
+    public void testEquals_DifferentImp() {
+        Deque<String> LLD = new LinkedListDeque<>();
+        Deque<String> AD = new ArrayDeque<>();
+        assertTrue(LLD.equals(AD));
+
+        for (int i = 1; i < 5; i++){
+            LLD.addLast("" + i);
+            AD.addLast(""+ i);
+        }
+        assertTrue(LLD.equals(AD));
+
+        AD.addLast("4");
+        assertFalse(LLD.equals(AD));
+    }
+
+    @Test
+    public void testEquals_DifferentClass() {
+        LinkedListDeque<Integer> deque = new LinkedListDeque<>();
+        Object obj = new Object();
+        assertFalse(deque.equals(obj));
+    }
 }

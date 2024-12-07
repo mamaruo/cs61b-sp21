@@ -1,15 +1,13 @@
 package deque;
 
-import java.util.Arrays;
 import java.util.Iterator;
-import java.util.Objects;
 
 @SuppressWarnings("unchecked")
 public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
     private int capacity; // 数组长度
     private int size; // 队列的长度
-    private int first; // 队列第一个元素的位置
-    private int last; // 队列最后一个元素的后一位
+    private int first; // 队列第一个元素的索引
+    private int last; // 队列最后一个元素的索引后一位
     private T[] items; // 存储元素的数组
 
     public ArrayDeque() {
@@ -90,7 +88,8 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
      */
     private void resize(int newCapacity) {
         if (newCapacity < size) {
-            throw new IllegalArgumentException("New capacity must be greater than or equal to the current size.");
+            throw new IllegalArgumentException("New capacity" +
+                    " must be greater than or equal to the current size.");
         }
         T[] newItems = (T[]) new Object[newCapacity];
         for (int i = 0; i < size; i++) {
@@ -129,20 +128,28 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
         System.out.println();
     }
 
-
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
+    public boolean equals(Object obj) {
+        if (this == obj) {
             return true;
         }
-        if (o instanceof ArrayDeque) {
-            ArrayDeque<?> that = (ArrayDeque<?>) o;
+        if (obj == null) {
+            return false;
+        }
+
+        if (obj instanceof Deque<?> that) {
             if (this.size() != that.size()) {
                 return false;
             }
-            for (int i = 0; i < this.size; i++) {
-                if (!(Objects.equals(this.get(i), that.get(i)))) {
-                    return false;
+            if (this.isEmpty() && that.isEmpty()) {
+                return true;
+            }
+            Iterator<?> thatIterator = that.iterator();
+            for (T item : this) {
+                if (thatIterator.hasNext()){
+                    if (!thatIterator.next().equals(item)){
+                        return false;
+                    }
                 }
             }
         } else {
@@ -162,21 +169,21 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
     }
 
     private class ArrayDequeIterator implements Iterator<T> {
-        private int pos;
+        private int times;
 
-        public ArrayDequeIterator() {
-            this.pos = 0;
+        ArrayDequeIterator() {
+            this.times = 0;
         }
 
         @Override
         public boolean hasNext() {
-            return pos < size;
+            return times < size;
         }
 
         @Override
         public T next() {
-            T nextItem = items[pos];
-            pos++;
+            T nextItem = items[(times + first) % capacity];
+            times++;
             return nextItem;
         }
     }
