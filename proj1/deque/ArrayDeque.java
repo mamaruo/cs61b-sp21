@@ -88,8 +88,8 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
      */
     private void resize(int newCapacity) {
         if (newCapacity < size) {
-            throw new IllegalArgumentException("New capacity" +
-                    " must be greater than or equal to the current size.");
+            throw new IllegalArgumentException("New capacity"
+                    + " must be greater than or equal to the current size.");
         }
         T[] newItems = (T[]) new Object[newCapacity];
         for (int i = 0; i < size; i++) {
@@ -147,8 +147,8 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
             }
             Iterator<?> thatIterator = that.iterator();
             for (T item : this) {
-                if (thatIterator.hasNext()){
-                    if (!thatIterator.next().equals(item)){
+                if (thatIterator.hasNext()) {
+                    if (!thatIterator.next().equals(item)) {
                         return false;
                     }
                 }

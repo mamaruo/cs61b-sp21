@@ -2,7 +2,7 @@ package deque;
 
 import java.util.Iterator;
 
-public class LinkedListDeque<T> implements Deque<T> {
+public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
     private class LNode {
         T data;
         LNode prev;
@@ -136,8 +136,8 @@ public class LinkedListDeque<T> implements Deque<T> {
             }
             Iterator<?> thatIterator = that.iterator();
             for (T item : this) {
-                if (thatIterator.hasNext()){
-                    if (!thatIterator.next().equals(item)){
+                if (thatIterator.hasNext()) {
+                    if (!thatIterator.next().equals(item)) {
                         return false;
                     }
                 }
