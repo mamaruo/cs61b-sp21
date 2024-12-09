@@ -145,12 +145,9 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
             if (this.isEmpty() && that.isEmpty()) {
                 return true;
             }
-            Iterator<?> thatIterator = ((Deque<?>) that).iterator();
-            for (T item : this) {
-                if (thatIterator.hasNext()) {
-                    if (!thatIterator.next().equals(item)) {
-                        return false;
-                    }
+            for (int i = 0; i < this.size; i++) {
+                if (!this.get(i).equals(that.get(i))) {
+                    return false;
                 }
             }
         } else {
